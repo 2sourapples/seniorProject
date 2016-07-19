@@ -1,0 +1,91 @@
+<!doctype html>
+<!-- import bug comment display widget from macro -->
+    {% import 'pfs_menu_widget.html' as menu_widget %}
+
+<html>
+<head>
+  <title>PFS</title>
+</head>
+<body>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+<h1>Patient Feedback System</h1>
+{{ menu_widget.display_menu() }}
+
+<h1>Edit Profile</h1>
+  <ul>
+    <li><a href="/user_profile">User Profile(back)</a></li>
+  </ul>
+
+
+<form action="/edit_user_profile" method="POST">
+
+<p>
+User Name (current user name = {{ user_info.user_name }}):<br>
+  <input name="user_name" type="text" width="100" placeholder="User Name" value="{{ user_info.user_name }}"><br>
+</p>
+
+<p>
+User Password:<br>
+</p>
+
+<p>
+User Display Name (current display name = {{ user_info.display_name }}):<br>
+  <input name="display_name" type="text" width="100" placeholder="Display Name" value="{{ user_info.display_name }}"><br>
+</p>
+
+<p>
+User E-mail (current e-mail = {{ user_info.e_mail }}):<br>
+  <input name="e_mail" type="text" width="100" placeholder="Email" value="{{ user_info.e_mail }}"><br>
+</p>
+
+<p>
+User Phone Number (current phone number = {{ user_info.phone_number }}):<br>
+  <input name="phone_number" type="text" width="100" placeholder="Phone_Number" value="{{ user_info.phone_number }}"><br>
+</p>
+
+<p>
+Select role (current role = {{ user_info.role }}):<br>
+  <select name="role">
+    <option value="{{ user_info.role }}">{{ user_info.role }}</option>
+    <option value="Client">Client</option>
+    <option value="Therapist">Therapist</option>
+</select><br>
+</p>
+
+<p>
+Select Assigned Therapist (current therapist =
+                           {{ user_info.therapist_name }}):<br>
+  <select name="assigned_therapist">
+    <option value="{{ user_info.assigned_therapist }}">
+                   {{ user_info.therapist_name }}</option>
+    {% for therapist in therapists %}
+        <option value={{ therapist.user_id }}>
+            {{ therapist.display_name }}</option>
+    {% endfor %}
+</select><br>
+</p>
+
+<input type="submit" name="action" value="Edit">
+</form><br>
+</p>
+
+</body>
+</html>

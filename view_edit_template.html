@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html>
+<head>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+<h1>PFS - Answer Survey</h1>
+
+
+    <title>View/Edit/Template - Template {{ template.template_id }}</title>
+</head>
+
+  <ul>
+    <li><a href="/client_details_select?cid={{ template.client_id }}&start_date=default&end_date=default">
+             Client Details(back-new)</a>
+  </ul>
+
+<body>
+<h1>Please select questions to be included in the survey</h1>
+Select questions from the drop down list.<br>
+<br>
+<!-- Available fields: template_id, therapist_id, client_id, 
+                       question_list, send_time1, send_time2,
+                       send_time3, send_time4, send_time4-->
+
+
+{% set question_ids = template.question_list.split('%') %}
+
+<form action="/view_edit_template/{{ template.template_id }}" method="POST">
+  <input name="template" type="hidden" value="{{ template.template_id }}">
+
+<table style="width:100%">
+	<tr>
+	    <td><B> Question number </B></td> 
+            <td><B> Question </B></td> 
+            <td><B> Answer </B></td> 
+        </tr>
+    {% set count = 0 %}
+    {% set matching_question = 'test' %}
+    {% for question_id in question_ids %}
+        {% set count = count + 1 %}
+        {% set answer_label = 'answer' + count|string %}
+        <tr>
+            <td> {{ count }} </td> 
+            <td>  
+                {% for question in question_text_array %}
+                    {% if (question_id|int == question.question_id|int) %}
+                        {% set matching_question = question.question_text %}
+                        {{ matching_question }}
+                    {%- endif %}
+                {% endfor %}
+
+            </td> 
+            <td> Select response:<br>
+                   <select name="answer_label">
+                     <option value=0>0</option>
+                     <option value=1>1</option>
+                     <option value=2>2</option>
+                     <option value=3>3</option>
+                   </select>
+            </td> 
+        </tr>
+    {% endfor %}
+</table>
+
+  <input type="submit" name="action" value="Save Answer">
+</form>
+
+
+</body>
+</html>

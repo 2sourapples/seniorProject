@@ -1,0 +1,88 @@
+<!doctype html>
+
+<html>
+<head>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+<h1>PFS - Answer Survey</h1>
+
+
+    <title>Answer Survey - Survey {{ survey.survey_id }}, Created {{ survey.time_created }}</title>
+</head>
+
+  <ul>
+    <li><a href="/client_details/{{ survey.client_id }}">Client Details(back)</a></li>
+  </ul>
+
+<body>
+<h1>Please complete questions below</h1>
+The questions below may be completed by selecting a value from the drop down box.<br>
+<br>
+<!-- Available fields: survey_id, client_id, question_list, client_comment,
+                       therapist_comment, time_created, time_completed-->
+
+
+{% set question_ids = survey.question_list.split('%') %}
+
+<form action="/answer_survey/{{ survey.survey_id }}" method="POST">
+  <input name="survey_id" type="hidden" value="{{ survey.survey_id }}">
+
+<table style="width:100%">
+	<tr>
+	    <td><B> Question number </B></td> 
+            <td><B> Question </B></td> 
+            <td><B> Answer </B></td> 
+        </tr>
+    {% set count = 0 %}
+    {% set matching_question = 'test' %}
+    {% for question_id in question_ids %}
+        {% set count = count + 1 %}
+        {% set answer_label = 'answer' + count|string %}
+        <tr>
+            <td> {{ count }} </td> 
+            <td>  
+                {% for question in question_text_array %}
+                    {% if (question_id|int == question.question_id|int) %}
+                        {% set matching_question = question.question_text %}
+                        {{ matching_question }}
+                    {%- endif %}
+                {% endfor %}
+
+            </td> 
+            <td> Select response:<br>
+                   <select name="answer_label">
+                     <option value=0>0</option>
+                     <option value=1>1</option>
+                     <option value=2>2</option>
+                     <option value=3>3</option>
+                   </select>
+            </td> 
+        </tr>
+    {% endfor %}
+</table>
+
+<textarea name="client_comment" rows="10" cols="50" placeholder="Comment">{{ survey.client_comment }}</textarea><br>
+
+  <input type="submit" name="action" value="Save Answer">
+</form>
+
+
+</body>
+</html>

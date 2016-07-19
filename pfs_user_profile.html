@@ -1,0 +1,72 @@
+ <!doctype html>
+<!-- import bug comment display widget from macro -->
+{% import 'pfs_menu_widget.html' as menu_widget %}
+
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+
+<body>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+
+<h1>Patient Feedback System</h1>
+{{ menu_widget.display_menu() }}
+
+<h1>{{ user_info.display_name }}'s Profile</a></h1>
+
+
+User id: {{ user_info.user_id }}<br>
+
+Name: {{user_info.user_name }}<br>
+
+Display Name: {{ user_info.display_name }}<br>
+
+E-mail: {{user_info.e_mail }}<br>
+
+Phone Number: {{ user_info.phone_number }}<br>
+
+Role: {{ user_info.role }}<br>
+
+Assigned Therapist (for clients only): {{ user_info.therapist_name }} <br>
+
+<p>
+<a href="/edit_user_profile">Edit this profile</a></p>
+
+<h2>Subscriptions</h2>
+
+{% set num_subscriptions = subscriptions|length %}
+{% if num_subscriptions == 0 %}
+    No subscriptions located for this user
+{% endif %}
+
+<ul><!-- unordered list -->
+    {% for subscription in subscriptions %}
+        <li><a href="/bug_details/{{ subscription.bug_id }}">
+            {{ subscription.bug_title }}</a> 
+            (ID = {{ subscription.bug_id }})
+        </li>
+    {% endfor %}
+</ul>
+
+
+</body>
+</html>

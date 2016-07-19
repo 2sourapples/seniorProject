@@ -1,0 +1,90 @@
+<!doctype html>
+
+<html>
+<head>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+<h1>PFS - Answer Survey</h1>
+
+
+    <title>Answer Survey - Survey {{ survey2.survey_id }}, Created {{ survey2.time_created }}</title>
+</head>
+
+  <ul>
+    <li><a href="/client_details/{{ survey2.client_id }}">Client Details(back)</a></li>
+  </ul>
+
+<body>
+<h1>Please complete questions below</h1>
+The questions below may be completed by selecting a value from the drop down box.<br>
+<br>
+<!-- Available fields: survey_id, client_id, client_comment,
+                       therapist_comment, time_created, time_completed-->
+
+<form action="/answer_survey2/{{ survey2.survey_id }}" method="POST">
+  <input name="survey_id" type="hidden" value="{{ survey2.survey_id }}">
+
+<!-- get number of questions to return to python as form field-->
+    {% set num_questions = survey2.question_text_array|length %}
+   <input name="num_questions" type="hidden" value="{{ num_questions }}">
+
+
+<table style="width:100%">
+	<tr>
+	    <td><B> Question number </B></td> 
+            <td><B> Question </B></td> 
+            <td><B> Answer </B></td> 
+        </tr>
+    {% set question_count = 0 %}
+    {% for question_text in survey2.question_text_array %}
+        {% set question_count = question_count + 1 %}
+        <tr>
+            <td> {{ question_count }} </td> 
+            <td> {{ question_text.q_text }}  </td>
+
+        {% set answer_label = 'answer' + question_count|string %}
+        {% set answer_variable = 'survey2.' + answer_label %}
+
+            <td> 
+
+ Select response: (for {{answer_label}} current value
+                   is {{ question_text.a_val }})<br>
+                   <select name="{{answer_label}}">
+                     <option value="{{ question_text.a_val }}">
+                             {{ question_text.a_val }}</option>
+                     <option value=0>0</option>
+                     <option value=1>1</option>
+                     <option value=2>2</option>
+                     <option value=3>3</option>
+                   </select>
+
+            </td> 
+        </tr>
+    {% endfor %}
+</table>
+
+<textarea name="client_comment" rows="10" cols="50" placeholder="Comment">{{ survey2.client_comment }}</textarea><br>
+
+  <input type="submit" name="action" value="Save Answer">
+</form>
+
+
+</body>
+</html>

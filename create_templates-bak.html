@@ -1,0 +1,105 @@
+<!doctype html>
+
+<html>
+<head>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+<h1>PFS - Create Templates</h1>
+
+</head>
+
+<body>
+
+  <ul>
+    <li><a href="/client_details_select?cid=3&start_date=default&end_date=default">Client Details(back)</a></li>
+  </ul>
+
+<h2>Edit Template(s)</h2>
+{% set client_has_phq9_template=False %}
+{% set client_has_custom_template=False %}
+
+client_has_phq9_template = {{ client_has_phq9_template }}<br>
+client_has_custom_template =  {{ client_has_custom_template }}<br>
+Before for loop<br>
+
+{% for template in templates %}
+    The value of template.phq9 = {{ template.phq9 }}<br>
+    {% if template.phq9 == True %}
+        Test point1<br>
+        {% set client_has_phq9_template=True %}
+        client_has_phq9_template = {{ client_has_phq9_template }}<br>
+    {% else %}
+        Test point2<br>
+        {% set client_has_custom_template=True %}
+        client_has_custom_template =  {{ client_has_custom_template }}<br>
+    {% endif %}
+{% endfor %}
+After for loop<br>
+client_has_phq9_template = {{ client_has_phq9_template }}<br>
+client_has_custom_template =  {{ client_has_custom_template }}<br>
+
+New section testing dictionary variable:<br>
+{% set vars = {'client_has_phq9_template':False, 'client_has_custom_template':False} %}
+
+{% for template in templates %}
+    The value of template.phq9 = {{ template.phq9 }}<br>
+    {% if template.phq9 == True %}
+        Test point3<br>
+        {% set vars({'client_has_phq9_template': True}) %}
+    {% else %}
+        Test point4<br>
+        {% set vars.update({'client_has_phq9_template': True}) %}
+    {% endif %}
+{% endfor %}
+After for loop<br>
+client_has_phq9_template = {{ vars['client_has_phq9_template'] }}<br>
+client_has_custom_template =  {{ vars['client_has_custom_template'] }}<br>
+
+    {% if templates|length == 0 %}
+       There are currently no templates defined for the client<br>
+<p>
+       <STRONG>Create PHQ-9 Survey Template</STRONG> : (select choice save)
+       <INPUT TYPE="radio" NAME="PHQ-9" VALUE="y">Create
+       <INPUT TYPE="radio" NAME="PHQ-9" VALUE="n" checked>Do not create
+<br>
+       <STRONG>Create Custom Survey Template</STRONG>: (select choice save)
+       <INPUT TYPE="radio" NAME="Custom" VALUE="y">Create
+       <INPUT TYPE="radio" NAME="Custom" VALUE="n" checked>Do not create
+</p>
+
+    {% else %}
+        <ul>
+            {% for template_id in templates %}
+                <li><a href="/view_edit_template/{{ template_id }}">View/Edit Template</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+<form action="/create_templates/" method="POST">
+  <input name="template" type="hidden" value="test">
+
+
+  <input type="submit" name="action" value="Save Answer">
+</form>
+
+
+</body>
+</html>

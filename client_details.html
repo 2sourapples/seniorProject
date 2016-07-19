@@ -1,0 +1,69 @@
+<!doctype html>
+<!-- import menu_widget from macro -->
+    {% import 'pfs_menu_widget.html' as menu_widget %}
+<html>
+<head>
+  <title>PFS</title>
+</head>
+<head>
+
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+
+  <h1>Patient Feedback System</h1>
+  <p>Welcome, {{ user_info.display_name }}</p>
+
+{{ menu_widget.display_menu() }}
+
+
+</head>
+<h2>Treatment History</h2>
+
+<p>
+Test link to parameterized client details page:<br>
+user_info.client_id={{user_info.user_id}}<br>
+
+<a href="/client_details_select/{{user_info.user_id}}?start_date=default&end_date=default">
+                                              Client Details (last two weeks)</a><br>
+<a href="/client_details_select?cid={{user_info.user_id}}&start_date=default&end_date=default">
+                                              Client Details (last two weeks)</a><br>
+
+</p>
+<p>
+Notes: for graph the following data is provided for each survey:<br>
+survey_id, phq9, avg_score, time_created<br>
+
+phq9 is Boolen variable indicating whether survey is PHQ9
+
+</p>
+
+<ul><!-- unordered list -->
+    {% for survey2 in client_surveys2 %}
+        <li> <a href="/answer_survey2/{{  survey2.survey_id }}">
+             Survey - {{ survey2.survey_id }}
+             (created - {{ survey2.time_created  }})</a><br>
+             (graph data: {{ survey2.survey_id }}, {{ survey2.phq9 }}, 
+             {{ survey2.avg_score }}, {{ survey2.time_created }})
+ </li>
+    {% endfor %}
+</ul>
+
+
+</html>

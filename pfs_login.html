@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <title>PFS</title>
+</head>
+<body>
+<h1>Patient Feedback System</h1>
+<h2>Log In</h2>
+<p>You are not yet logged in to the Patient Feedback System.</p>
+<form action="/login" method="POST">
+  <input name="user" type="text" width="40" placeholder="User name"><br>
+  <input name="passwd" type="password" width="40" placeholder="Password"><br>
+  <input type="submit" name="action" value="Log in">
+  <input type="submit" name="action" value="Create account">
+<p> To create a new account all of the information below must be entered</p>
+
+  <input name="display_name" type="text" width="40" placeholder="Display Name"><br>
+  <input name="e_mail" type="text" width="40" placeholder="e-mail address"><br>
+  <input name="phone_number" type="text" width="40" placeholder="phone number XXX-XXX-XXXX"><br>
+
+
+<p>
+Select your user role:<br>
+  <select name="role">
+    <option value="Client">Client</option>
+    <option value="Therapist">Therapist</option>
+  </select><br>
+</p>
+
+</form>
+</body>
+</html>

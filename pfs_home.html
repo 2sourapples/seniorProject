@@ -1,0 +1,56 @@
+<!doctype html>
+<!-- import menu_widget from macro -->
+    {% import 'pfs_menu_widget.html' as menu_widget %}
+<html>
+<head>
+  <title>PFS</title>
+</head>
+<head>
+
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+
+  <h1>Patient Feedback System</h1>
+  <p>Welcome, {{ user.name }}</p>
+
+{{ menu_widget.display_menu() }}
+
+
+  <h2>Search</h2>
+  <form method="get" action="/search">
+  <input type="text" name="q" placeholder="Search terms...">
+  <input type="submit" value="Search">
+</form>
+
+</head>
+<h2>List of Clients</h2>
+
+<p>
+
+<ul><!-- unordered list -->
+    {% for client in client_list %}
+        <li> <a href="/client_details_select?cid={{ client.user_id }}&start_date=default&end_date=default">
+             {{ client.display_name }}</a>
+ </li>
+    {% endfor %}
+</ul>
+
+
+</html>

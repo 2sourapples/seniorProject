@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- import menu_widget from macro -->
+    {% import 'pfs_menu_widget.html' as menu_widget %}
+
+<html>
+<head>
+<style>
+h1 {
+    border-bottom: 3px solid #cc9900;
+    color: #996600;
+    font-size: 30px;
+}
+table, th , td {
+    border: 1px solid grey;
+    border-collapse: collapse;
+    padding: 5px;
+    vertical-align: bottom;
+}
+table tr:nth-child(odd) {
+    background-color: #f1f1f1;
+}
+table tr:nth-child(even) {
+    background-color: #ffffff;
+}
+</style>
+<h1>PFS - Create/Edit/View Templates</h1>
+
+{{ menu_widget.display_menu() }}
+</head>
+
+<body>
+  <ul>
+    <li><a href="/client_details_select?cid={{ client_id }}&start_date=default&end_date=default">
+        Client Details(back)</a></li>
+  </ul>
+
+<h2>Create/View/Edit Templates</h2>
+{% set phq9_counter = [] %}
+{% set custom_counter = [] %}
+
+{% for template in templates %}
+    {% if template.phq9 == True %}
+        {% if phq9_counter.append('1') %}{% endif %}
+    {% else %}
+        {% if custom_counter.append('1') %}{% endif %}
+    {% endif %}
+{% endfor %}
+
+<form action="/create_templates/{{ client_id }}" method="POST">
+
+
+<p>
+<h3>PHQ-9 Template</h3>
+
+    {% if phq9_counter|length == 0 %}
+       There is currently no PHQ-9 template defined for the client<br>
+
+       <STRONG>Create PHQ-9 Survey Template</STRONG> : (select choice save)
+       <INPUT TYPE="radio" NAME="Create_PHQ9" VALUE="y">Create
+       <INPUT TYPE="radio" NAME="Create_PHQ9" VALUE="n" checked>Do not create<br>
+
+    {% else %}
+        <ul>
+            {% for template in templates %}
+                {% if template.phq9 == True %}
+                    <li><a href="/view_edit_template/{{template.template_id }}">View/Edit PHQ-9 Template</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
+<h3>Custom Template</h3>
+
+    {% if custom_counter|length == 0 %}
+       There is currently no custom template defined for the client<br>
+
+       <STRONG>Create Custom Survey Template</STRONG>: (select choice save)
+       <INPUT TYPE="radio" NAME="Create_Custom" VALUE="y">Create
+       <INPUT TYPE="radio" NAME="Create_Custom" VALUE="n" checked>Do not create
+
+    {% else %}
+        <ul>
+            {% for template in templates %}
+                {% if template.phq9 == False %}
+                    <li><a href="/view_edit_template/{{template.template_id }}">View/Edit Custom Template</a></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+</p>
+
+Click the button below to create template(s):<br>
+<input type="submit" name="action" value="Create Template(s)">
+</form>
+
+</body>
+</html>
