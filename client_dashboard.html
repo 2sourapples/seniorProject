@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<title>This Is The Title</title>
+<link rel="stylesheet" type="text/css" href="css/client_dashboard_style.css">
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="jquery.datepick.package-5.0.1/jquery.datepick.css"> 
+<script type="text/javascript" src="jquery.datepick.package-5.0.1/jquery.plugin.js"></script> 
+<script type="text/javascript" src="jquery.datepick.package-5.0.1/jquery.datepick.js"></script>
+<script>
+$(function() {
+	$('#inlineDatepicker').datepick({onSelect: showDate});
+});
+
+function showDate(date) {
+	alert('The date chosen is ' + date);
+}
+</script>
+</head>
+
+<body>
+<div>
+	<header>
+		<h1 class= "logo">Me.mood</h1>
+	</header>
+</div>
+
+<section class = "dashboard">
+	<div class = "graph">
+		<h2>Main Graph goes here</h2>
+			<img src="images/sampleGraph.jpg">
+	</div>
+	<div class = "calendar">
+		<h1>Datepicker</h1>
+			<div id="inlineDatepicker"></div>
+	</div>
+</section>
+
+<footer>
+	<h1 class = "footer_text">Footer Text</h1>
+</footer>
+</body>
+<!-- 
+<body>
+	<div class = "w3-row">
+	<div class = "w3-container w3-half">
+		<h2>Main Graph goes here</h2>
+		<img src="images/sampleGraph.jpg">
+	</div>
+	<div class = "w3-container w3-half">
+		<h1>Datepicker</h1>
+		<div id="inlineDatepicker"></div>
+	</div>
+</div>
+</body>-->
+</html>
